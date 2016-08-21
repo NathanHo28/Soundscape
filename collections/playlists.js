@@ -1,5 +1,24 @@
 Playlists = new Mongo.Collection('playlist');
 
+Playlists.allow({
+	insert: function(userId, doc) {
+		return !!userId;
+	}
+});
+
+Song = new SimpleSchema({
+	title: {
+		type: String
+	},
+	artist: {
+		type: String
+	},
+	album: {
+		type: String,
+		optional: true
+	}
+});
+
 PlaylistSchema = new SimpleSchema({
 	name: {
 		type: String,
@@ -8,6 +27,17 @@ PlaylistSchema = new SimpleSchema({
 	desc: {
 		type: String,
 		label: 'Description'
+	},
+	songs: {
+		type: [Song]
+	},
+	inQueue: {
+		type: Boolean,
+		defaultValue: false,
+		optional: true,
+		autoform: {
+			type: "hidden"
+		}
 	},
 	author: {
 		type: String,
